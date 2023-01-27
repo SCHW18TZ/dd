@@ -1,15 +1,18 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore,collection } from "firebase/firestore";
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyB5bYBqPni9Y7VRnnnjE-qk217q8_Vnkt8",
-  authDomain: "chuchi-afa4b.firebaseapp.com",
-  projectId: "chuchi-afa4b",
-  storageBucket: "chuchi-afa4b.appspot.com",
-  messagingSenderId: "458677175659",
-  appId: "1:458677175659:web:30f362f533589dca35782e",
-  measurementId: "G-6Q6PPEBN0S",
+  apiKey: "AIzaSyCgypJmJkycxeryGWBawzakxfJXcwd3tjI",
+  authDomain: "cheemstagram.firebaseapp.com",
+  projectId: "cheemstagram",
+  storageBucket: "cheemstagram.appspot.com",
+  messagingSenderId: "427895683510",
+  appId: "1:427895683510:web:ad1d4418a7e960ead66917"
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+export const db = getFirestore(app);
