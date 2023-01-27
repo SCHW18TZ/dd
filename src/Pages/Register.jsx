@@ -1,45 +1,65 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Button from "@mui/material/Button";
+import GoogleButton from "react-google-button";
+import { auth, provider } from "../firebase";
+import { signInWithPopup,createUserWithEmailAndPassword } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import {useNavigate} from 'react-router-dom'
+const Register = () => {
+    let navigate = useNavigate();
 
-import { useState } from "react";
-
-const Login = () => {
-  const [user] = useAuthState(auth);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const email = event.target[0].value;
-    const password = event.target[2].value;
-    const result = await createUserWithEmailAndPassword(auth, email, password);
+  const LogInWithGoogle = async () => {
+    const result = await signInWithPopup(auth, provider);
+    console.log(result);
+    navigate('/')
   };
 
-  return (
-    <div className="register">
-      <form onSubmit={handleSubmit} className="Login-Form">
-        <TextField
-          required
-          id="outlined-basic"
-          label="Enter  Your Email"
-          variant="outlined"
-        />
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[2].value;
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    console.log(result);
+    navigate('/')
+}
 
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <Button type="submit" variant="contained">
-          Register
-        </Button>
+  const [user] = useAuthState(auth);
+  return (
+    <div className="Register">
+      <form onSubmit={handleSubmit} className="RegisterForm">
+        <div className="inputContainer">
+          <div className="input">
+            <TextField
+              required
+              id="outlined-basic"
+              type="email"
+              label="Email"
+              variant="outlined"
+            />
+          </div>
+          <div className="input">
+            <TextField
+              required
+              id="outlined-password-input"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+            />
+          </div>
+          <div className="buttonContainer">
+            <Button type="submit" variant="contained" className="SignInButton">
+              Register
+            </Button>
+          </div>
+        </div>
       </form>
-      <h1>{user?.email}</h1>
+      <div className="GoogleContainer">
+        <p>Or you can sign in with Google</p>
+        <GoogleButton onClick={LogInWithGoogle} />
+      </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

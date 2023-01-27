@@ -3,19 +3,29 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import GoogleButton from "react-google-button";
 import { auth, provider } from "../firebase";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup,createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import {useNavigate} from 'react-router-dom'
 
-const Register = () => {
+const Login = ()=>{
+  let navigate = useNavigate();
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     console.log(result);
+    navigate('/')
   };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const email = e.target[0].value;
+      const password = e.target[2].value;
+      const user = signInWithEmailAndPassword(auth, email, password)
+      console.log(user);
+      navigate('/')
+    }
 
-  const [user] = useAuthState(auth);
-  return (
-    <div className="Register">
-      <form className="RegisterForm">
+    return(
+        <div  className="Register">
+      <form onSubmit={handleSubmit} className="RegisterForm">
         <div className="inputContainer">
           <div className="input">
             <TextField
@@ -47,7 +57,7 @@ const Register = () => {
         <GoogleButton onClick={LogInWithGoogle} />
       </div>
     </div>
-  );
-};
+    )
+}
 
-export default Register;
+export default Login
