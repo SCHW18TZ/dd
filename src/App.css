@@ -1,1 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 
+body {
+  overflow: hidden;
+}
+
+.Register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  flex-direction: column;
+}
+
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input {
+  margin: 15px;
+}
+
+.buttonContainer {
+  margin-top: 25px;
+}
+
+.SignInButton {
+  width: 230px;
+}
+
+.GoogleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.GoogleContainer p {
+  color: white;
+  font-weight: bold;
+  margin: 30px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 25px;
+}
+
+.brand {
+  margin-left: 10px;
+}
+
+.brand .link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+ul .link {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 20px;
+}
