@@ -1,6 +1,4 @@
-
 //Make a whole react page which allows a user that is logged in to make a post
-
 
 import React from "react";
 import { auth } from "../firebase";
@@ -22,8 +20,11 @@ const CreatePost = () => {
     const description = e.target[2].value;
     await addDoc(postCollectionRef, {
       title: title,
-        description: description,
-      username: user.email,
+      description: description,
+      author: {
+        name: user.email,
+        uid: user.uid,
+      },
     });
     navigate("/");
   };
@@ -47,7 +48,6 @@ const CreatePost = () => {
               <div className="input">
                 <TextField
                   required
-
                   id="outlined-password-input"
                   label="Description"
                   type="text"
@@ -60,7 +60,6 @@ const CreatePost = () => {
                   variant="contained"
                   className="SignInButton"
                 >
-
                   Make a post
                 </Button>
               </div>
@@ -76,6 +75,5 @@ const CreatePost = () => {
     </div>
   );
 };
-    
 
 export default CreatePost;

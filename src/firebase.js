@@ -1,15 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore,collection } from "firebase/firestore";
-
+import { getFirestore, collection } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCgypJmJkycxeryGWBawzakxfJXcwd3tjI",
-  authDomain: "cheemstagram.firebaseapp.com",
-  projectId: "cheemstagram",
-  storageBucket: "cheemstagram.appspot.com",
-  messagingSenderId: "427895683510",
-  appId: "1:427895683510:web:ad1d4418a7e960ead66917"
+  apiKey: "AIzaSyClrW_mM-SDeGCZ1psjwQeYE7FEdIMxQ1A",
+  authDomain: "backsozi.firebaseapp.com",
+  projectId: "backsozi",
+  storageBucket: "backsozi.appspot.com",
+  messagingSenderId: "589766431994",
+  appId: "1:589766431994:web:9d48291b457676fe452543",
 };
 
 const app = initializeApp(firebaseConfig);
