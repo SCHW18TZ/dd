@@ -6,7 +6,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { getDownloadURL } from "firebase/storage";
-
+import { UpdateProfile } from "firebase/auth";
 const MyAccount = () => {
   const [user] = useAuthState(auth);
   const [editName, seteditemail] = useState(true);
@@ -19,11 +19,16 @@ const MyAccount = () => {
     editemail ? seteditpassword(false) : seteditpassword(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const name = e.target[0].value;
-    const email = e.target[1].value;
+    let email = e.target[2].value;
     console.log(name, email);
+
+    const result = await UpdateProfile(user,{
+      displayName:name,
+      email:email
+    })
   };
 
   return (
