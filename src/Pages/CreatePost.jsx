@@ -52,6 +52,9 @@ const CreatePost = () => {
                   label="Description"
                   type="text"
                   autoComplete="current-password"
+                  multiline
+                  rows={4}
+                  className="text-field"
                 />
               </div>
               <div className="buttonContainer">
