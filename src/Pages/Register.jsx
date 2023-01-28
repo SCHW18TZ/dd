@@ -1,45 +1,124 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Button from "@mui/material/Button";
+import GoogleButton from "react-google-button";
+import { auth, provider, storage } from "../firebase";
+import {
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification  
+} from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
-import { useState } from "react";
+const Register = () => {
+  let navigate = useNavigate();
+  const [name, setname] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showpassword, setshowpassword] = useState(false)
+  const userCollectionRef = collection(db, "users")
 
-const Login = () => {
-  const [user] = useAuthState(auth);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const email = event.target[0].value;
-    const password = event.target[2].value;
-    const result = await createUserWithEmailAndPassword(auth, email, password);
+  const LogInWithGoogle = async () => {
+    const result = await signInWithPopup(auth, provider);
+    addDoc(userCollectionRef, {
+      name: result.user.displayName,
+      email: result.user.email,
+      profilePhoto: result.user.photoURL,
+      uid: result.user.uid,
+    })
+    navigate("/");
   };
 
-  return (
-    <div className="register">
-      <form onSubmit={handleSubmit} className="Login-Form">
-        <TextField
-          required
-          id="outlined-basic"
-          label="Enter  Your Email"
-          variant="outlined"
-        />
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target[2].value;
+    const password = e.target[4].value;
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    updateProfile(result.user, {
+      displayName: name,
+    });
+    const emailSen = await sendEmailVerification(auth.currentUser)
+    console.log(emailSen);
+    if (selectedImage == null) return;
+    const ImageRef = ref(storage, `ProfilePics/${selectedImage.name + v4()}`);
+    uploadBytes(ImageRef, selectedImage).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        updateProfile(result.user, {
+          photoURL: url,
+        });
+        addDoc(userCollectionRef, {
+          name: result.user.displayName,
+          email: result.user.email,
+          profilePhoto: url,
+          uid: result.user.uid,
+    })
+      });
+    });
+    navigate("/");
+  };
 
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <Button type="submit" variant="contained">
-          Register
-        </Button>
+  const [user] = useAuthState(auth);
+  return (
+    <div className="Register">
+      <form onSubmit={handleSubmit} className="RegisterForm">
+
+        <div className="inputContainer">
+        <h1>Register</h1>
+          <div className="input">
+            <TextField
+              required
+              id="outlined-basic"
+              type="text"
+              label="Name"
+              variant="outlined"
+              onChange={(e) => setname(e.target.value)}
+            />
+          </div>
+          <div className="input">
+            <TextField
+              required
+              id="outlined-basic"
+              type="email"
+              label="Email"
+              variant="outlined"
+            />
+          </div>
+          <div className="input">
+            <TextField
+              required
+              id="outlined-password-input"
+              label="Password"
+              type="Password"
+              autoComplete="current-password"
+            />
+          </div>
+          <div className="input">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSelectedImage(e.target.files[0])}
+            />
+          </div>
+          <div className="buttonContainer">
+            <Button type="submit" variant="contained" className="SignInButton">
+              Register
+            </Button>
+          </div>
+        </div>
       </form>
-      <h1>{user?.email}</h1>
+      <div className="GoogleContainer">
+        <p>Or you can sign in with Google</p>
+        <GoogleButton onClick={LogInWithGoogle} />
+      </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

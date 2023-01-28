@@ -1,15 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore, collection } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyB5bYBqPni9Y7VRnnnjE-qk217q8_Vnkt8",
-  authDomain: "chuchi-afa4b.firebaseapp.com",
-  projectId: "chuchi-afa4b",
-  storageBucket: "chuchi-afa4b.appspot.com",
-  messagingSenderId: "458677175659",
-  appId: "1:458677175659:web:30f362f533589dca35782e",
-  measurementId: "G-6Q6PPEBN0S",
+  apiKey: "AIzaSyClrW_mM-SDeGCZ1psjwQeYE7FEdIMxQ1A",
+  authDomain: "backsozi.firebaseapp.com",
+  projectId: "backsozi",
+  storageBucket: "backsozi.appspot.com",
+  messagingSenderId: "589766431994",
+  appId: "1:589766431994:web:9d48291b457676fe452543",
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+export const db = getFirestore(app);
+export const storage = getStorage(app);

@@ -24,6 +24,7 @@ const Navbar = () => {
           <h3>{user?.displayName}</h3>
           <Avatar src={user?.photoURL} />
           <button onClick={LogUserOut}>Sign out</button>
+          <Link to='/new'>Create A post</Link>
         </ul>
       ) : (
         <ul>
