@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Link } from "react-router-dom";
 
 const SinglePost = ({ post }) => {
   const commentsCollectionRef = collection(db, "comments");
@@ -35,24 +36,23 @@ const SinglePost = ({ post }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (commentText == "") return;
     await addDoc(commentsCollectionRef, {
       comment: commentText,
-      name: user.email,
+      name: user.displayName,
       postId: post.id,
+      uid: user.uid,
     });
     setcommentText("");
   };
 
-  const deletePost = async ()=>{
-
-  }
-  console.log(comments);
+  const deletePost = async () => {};
 
   return (
     <div>
       <h1>{post.title}</h1>
       <p>{post.description}</p>
-      <p>by {post.author.name}</p>
+      <Link to={`/user/${post.author.uid}`}>by {post.author.name}</Link>
       <button onClick={deletePost}>Delete Post</button>
       <form onSubmit={handleSubmit}>
         <input
@@ -66,7 +66,7 @@ const SinglePost = ({ post }) => {
       {comments.map((comment) => (
         <div>
           <h2>{comment.comment}</h2>
-          <p>{comment.name}</p>
+          <Link to={`/user/${comment.uid}`}>{comment.name}</Link>
         </div>
       ))}
     </div>

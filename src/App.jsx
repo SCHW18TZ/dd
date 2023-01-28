@@ -11,6 +11,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 import ForgetPassword from "./Pages/ForgetPassword";
 import UserPage from "./Pages/UserPage";
+import MyAccount from "./Pages/MyAccount";
 
 function App() {
   const [posts, setposts] = useState([]);
@@ -29,7 +30,7 @@ function App() {
     };
 
     getPosts();
-    getUsers()
+    getUsers();
   }, []);
 
   return (
@@ -40,17 +41,18 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/new" element={<CreatePost />} />
-        <Route path="/reset" element={<ForgetPassword/>}/>
+        <Route path="/reset" element={<ForgetPassword />} />
+        <Route path="/myaccount" element={<MyAccount />} />
         {posts.map((post) => (
           <Route
             path={`/post/${post.id}`}
             element={<SinglePost post={post} />}
           />
         ))}
-        {users.map((user) => (
+        {users.map((userData) => (
           <Route
-            path={`/user/${user.id}`}
-            element={<UserPage user={user} />}
+            path={`/user/${userData.uid}`}
+            element={<UserPage userData={userData} />}
           />
         ))}
       </Routes>

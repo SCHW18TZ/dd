@@ -22,7 +22,7 @@ const CreatePost = () => {
       title: title,
       description: description,
       author: {
-        name: user.email,
+        name: user.displayName,
         uid: user.uid,
       },
     });
@@ -34,42 +34,42 @@ const CreatePost = () => {
       {user ? (
         user.emailVerified ? (
           <div>
-          <form onSubmit={createPost} className="RegisterForm">
-            <div className="inputContainer">
-              <div className="input">
-                <TextField
-                  required
-                  id="outlined-basic"
-                  type="text"
-                  label="Title"
-                  variant="outlined"
-                />
-              </div>
+            <form onSubmit={createPost} className="RegisterForm">
+              <div className="inputContainer">
+                <div className="input">
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    type="text"
+                    label="Title"
+                    variant="outlined"
+                  />
+                </div>
 
-              <div className="input">
-                <TextField
-                  required
-                  id="outlined-password-input"
-                  label="Description"
-                  type="text"
-                  autoComplete="current-password"
-                  multiline
-                  rows={4}
-                  className="text-field"
-                />
+                <div className="input">
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Description"
+                    type="text"
+                    autoComplete="current-password"
+                    multiline
+                    rows={4}
+                    className="text-field"
+                  />
+                </div>
+                <div className="buttonContainer">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="SignInButton"
+                  >
+                    Make a post
+                  </Button>
+                </div>
               </div>
-              <div className="buttonContainer">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className="SignInButton"
-                >
-                  Make a post
-                </Button>
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
         ) : (
           <div>
             <h1>Please verify your email in order to create A post</h1>

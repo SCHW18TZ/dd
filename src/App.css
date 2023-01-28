@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,200&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,200&display=swap");
 
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
 }
 
 body {
@@ -88,10 +88,21 @@ ul .link {
   width: 225px;
 }
 
-.GoogleContainer p{
-  color:black;
+.GoogleContainer p {
+  color: black;
 }
 
 .showpassbtn {
   margin-left: 20px;
+}
+
+.My-Account {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.dvs {
+  margin: 40px 0;
 }

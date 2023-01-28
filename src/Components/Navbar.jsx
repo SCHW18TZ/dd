@@ -21,10 +21,10 @@ const Navbar = () => {
       </div>
       {user ? (
         <ul>
-          <h3>{user?.displayName}</h3>
+          <Link to={`/user/${user.uid}`}>{user?.displayName}</Link>
           <Avatar src={user?.photoURL} />
           <button onClick={LogUserOut}>Sign out</button>
-          <Link to='/new'>Create A post</Link>
+          <Link to="/new">Create A post</Link>
         </ul>
       ) : (
         <ul>
