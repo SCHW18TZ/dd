@@ -5,11 +5,15 @@ import GoogleButton from "react-google-button";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  let navigate = useNavigate()
+
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     console.log(result);
+    navigate('/')
   };
 
   const [user] = useAuthState(auth);
