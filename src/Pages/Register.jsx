@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import GoogleButton from "react-google-button";
-import { auth, provider } from "../firebase";
+import { auth, provider, storage } from "../firebase";
 import {
   signInWithPopup,
   createUserWithEmailAndPassword,
@@ -10,9 +10,13 @@ import {
 } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
 const Register = () => {
   let navigate = useNavigate();
   const [name, setname] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
@@ -27,6 +31,15 @@ const Register = () => {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     updateProfile(result.user, {
       displayName: name,
+    });
+    if (selectedImage == null) return;
+    const ImageRef = ref(storage, `ProfilePics/${selectedImage.name + v4()}`);
+    uploadBytes(ImageRef, selectedImage).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        updateProfile(result.user, {
+          photoURL: url,
+        });
+      });
     });
     navigate("/");
   };
@@ -62,6 +75,13 @@ const Register = () => {
               label="Password"
               type="password"
               autoComplete="current-password"
+            />
+          </div>
+          <div className="input">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSelectedImage(e.target.files[0])}
             />
           </div>
           <div className="buttonContainer">
