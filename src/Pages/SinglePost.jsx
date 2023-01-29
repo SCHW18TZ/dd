@@ -11,8 +11,9 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
-
+import {Toaster,toast} from 'react-hot-toast'
 const SinglePost = ({ post }) => {
+  const postCollectionRef = collection(db, "posts");
   const commentsCollectionRef = collection(db, "comments");
   const [commentText, setcommentText] = useState("");
   const [user] = useAuthState(auth);
@@ -44,16 +45,26 @@ const SinglePost = ({ post }) => {
       uid: user.uid,
     });
     setcommentText("");
+    toast.success ("Comment added successfully  ")
   };
 
-  const deletePost = async () => {};
+  // const deletePost = async () => {
+  //   if (post.author.uid == user.uid ){
+  //     deleteDoc(postCollectionRef).then(()=>{console.log("deleted")})
+  //     .catch(err=>{console.log(err);})
+  //   }
+  //     else{
+  //       console.log('wronge user');
+  //   }
+  // };
 
   return (
     <div>
+      <Toaster/>
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <Link to={`/user/${post.author.uid}`}>by {post.author.name}</Link>
-      <button onClick={deletePost}>Delete Post</button>
+      {/* <button onClick={deletePost}>Delete Post</button> */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
