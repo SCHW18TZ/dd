@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { signOut } from "firebase/auth";
+import Button from "@mui/material/Button";
 
 const Navbar = () => {
   const LogUserOut = async () => {
@@ -21,10 +22,14 @@ const Navbar = () => {
       </div>
       {user ? (
         <ul>
-          <Link to={`/user/${user.uid}`}>{user?.displayName}</Link>
+          <Link className="link" to={`/user/${user.uid}`}>{user?.displayName}</Link>
           <Avatar src={user?.photoURL} />
-          <button onClick={LogUserOut}>Sign out</button>
-          <Link to="/new">Create A post</Link>
+          <Button                     type="submit"
+                    variant="contained"
+                    className="SignInButton"
+                      onClick={LogUserOut}
+                    >Sign Out </Button>
+          <Link className="link" to="/new">Create A post</Link>
         </ul>
       ) : (
         <ul>
