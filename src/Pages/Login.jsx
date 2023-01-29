@@ -7,6 +7,7 @@ import { signInWithPopup,createUserWithEmailAndPassword, signInWithEmailAndPassw
 import { useAuthState } from "react-firebase-hooks/auth";
 import {useNavigate} from 'react-router-dom'
 import { Link } from "react-router-dom";
+import {toast,Toaster } from 'react-hot-toast'
 
 const Login = ()=>{
 
@@ -24,6 +25,7 @@ const Login = ()=>{
       const user = signInWithEmailAndPassword(auth, email, password)
       console.log(user);
       navigate('/')
+      toast.success('logged in successfully!')
     }
 
     const showPassword = () => {
@@ -32,6 +34,7 @@ const Login = ()=>{
 
     return(
         <div  className="Register">
+          <Toaster/>
       <form onSubmit={handleSubmit} className="RegisterForm">
         
         <div className="inputContainer">

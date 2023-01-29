@@ -9,12 +9,12 @@ import {
   updateProfile,
   sendEmailVerification  
 } from "firebase/auth";
+import {Toaster,toast} from 'react-hot-toast'
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 
@@ -62,11 +62,13 @@ const Register = () => {
       });
     });
     navigate("/");
+    toast.success("Registed successfully ")
   };
 
   const [user] = useAuthState(auth);
   return (
     <div className="Register">
+      <Toaster/>
       <form onSubmit={handleSubmit} className="RegisterForm">
 
         <div className="inputContainer">

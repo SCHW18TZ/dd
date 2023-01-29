@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import { db } from "../firebase";
 import { sendEmailVerification } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
+import {Toaster,toast} from 'react-hot-toast'
 
 const CreatePost = () => {
   const postCollectionRef = collection(db, "posts");
@@ -28,6 +29,7 @@ const CreatePost = () => {
       },
     });
     navigate("/");
+    toast.success("Post created successfully  ")
   };
 
   const sendVerification = async()=>{
@@ -36,6 +38,7 @@ const CreatePost = () => {
   }
   return (
     <div>
+      <Toaster/>
       {user ? (
         user.emailVerified ? (
           <div>

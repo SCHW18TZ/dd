@@ -5,16 +5,18 @@ import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { signOut } from "firebase/auth";
 import Button from "@mui/material/Button";
-
+import {Toaster,toast} from 'react-hot-toast'
 const Navbar = () => {
   const LogUserOut = async () => {
     await signOut(auth);
+    toast.success("Logged out")
   };
 
   const [user] = useAuthState(auth);
 
   return (
     <nav>
+      <Toaster/>
       <div className="brand">
         <Link to="/" className="link">
           Home
