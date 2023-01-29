@@ -4,14 +4,16 @@ import { auth } from "../firebase";
 import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { getDownloadURL } from "firebase/storage";
-import { UpdateProfile } from "firebase/auth";
+import { updateProfile,updateEmail } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 const MyAccount = () => {
   const [user] = useAuthState(auth);
   const [editName, seteditemail] = useState(true);
   const [editemail, seteditpassword] = useState(true);
-
+  let navigate = useNavigate()
   const editNameToogle = () => {
     editName ? seteditemail(false) : seteditemail(true);
   };
@@ -19,16 +21,23 @@ const MyAccount = () => {
     editemail ? seteditpassword(false) : seteditpassword(true);
   };
 
+  const changeEmail = async (e)=>{
+    e.preventDefault()
+    let email = e.target[0].value
+    const result = await updateEmail(user,email)
+    console.log(result);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const name = e.target[0].value;
     let email = e.target[2].value;
     console.log(name, email);
 
-    const result = await UpdateProfile(user,{
+    const result = await updateProfile(user,{
       displayName:name,
-      email:email
     })
+    navigate(`/user/${user.uid}`)
   };
 
   return (
@@ -49,7 +58,20 @@ const MyAccount = () => {
             {editName ? "Edit" : "Save"}
           </Button>
         </div>
+        
         <div className="dvs">
+          <Link to="/reset">Change Password</Link>
+        </div>
+        <div className="dvs">
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
+        </div>
+      
+      </form>
+    
+      <form  onSubmit={changeEmail} >
+      <div className="dvs">
           <TextField
             required
             id="outlined-required"
@@ -60,14 +82,7 @@ const MyAccount = () => {
           <Button variant="contained" onClick={editEmailToogle}>
             {editemail ? "Edit" : "Save"}
           </Button>
-        </div>
-        <div className="dvs">
-          <Link to="/reset">Change Password</Link>
-        </div>
-        <div className="dvs">
-          <Button type="submit" variant="contained">
-            Save
-          </Button>
+          <button type="submit">Change Email</button>
         </div>
       </form>
     </div>

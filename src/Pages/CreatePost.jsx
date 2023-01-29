@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { db } from "../firebase";
+import { sendEmailVerification } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 
 const CreatePost = () => {
@@ -29,6 +30,10 @@ const CreatePost = () => {
     navigate("/");
   };
 
+  const sendVerification = async()=>{
+    const result = await sendEmailVerification(user)
+    console.log(result);
+  }
   return (
     <div>
       {user ? (
@@ -74,6 +79,7 @@ const CreatePost = () => {
           <div>
             <h1>Please verify your email in order to create A post</h1>
             <p>Please check your inbox in order to verify your email.</p>
+            <button onClick={sendVerification}>Click here to resend verification mail</button>
           </div>
         )
       ) : (
