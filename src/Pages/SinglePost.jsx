@@ -56,11 +56,12 @@ const SinglePost = ({ post }) => {
   };
 
   const deletePost = async () => {
-      deleteDoc(doc(db,'posts',post.id)).catch(err=>{console.log(err);})
+      deleteDoc(doc(db,'posts','AiX6kigd9JLDtJx7JCZL')).catch(err=>{console.log(err);})
       navigate('/')
       toast.success("Post Deleted")
     
   };
+  
 
   return (
     <div>
@@ -68,7 +69,7 @@ const SinglePost = ({ post }) => {
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <Link to={`/user/${post.author.uid}`}>by {post.author.name}</Link>
-      {post.author.uid == user.uid &&(
+      {post.author.uid == user?.uid &&(
         <button onClick={deletePost}>Delete Post</button>
       )}
       
