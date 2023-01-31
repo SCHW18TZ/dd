@@ -102,7 +102,7 @@ const Register = () => {
             />
           </div>
           <div className="input">
-            <input
+            <input requireds
               type="file"
               accept="image/*"
               onChange={(e) => setSelectedImage(e.target.files[0])}

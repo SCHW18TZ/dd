@@ -41,7 +41,7 @@ const MyAccount = () => {
   };
 
   return (
-    <div >
+    <div  >
       <Toaster/>
     {user ? (<div className="My-Account">
     <form onSubmit={handleSubmit}>
