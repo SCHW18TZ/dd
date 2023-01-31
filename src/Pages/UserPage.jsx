@@ -12,7 +12,7 @@ const UserPage = ({ userData }) => {
       <Avatar src={userData.profilePhoto} />
       <h1>{userData.name}</h1>
       <h6>{userData.email}</h6>
-      {user.uid == userData.uid && <Link to="/myaccount">Edit</Link>}
+      {user?.uid == userData.uid && <Link to="/myaccount">Edit</Link>}
     </div>
   );
 };
