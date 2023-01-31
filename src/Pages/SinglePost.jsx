@@ -64,7 +64,7 @@ const SinglePost = ({ post }) => {
   
 
   return (
-    <div>
+    <div className="SinglePostPage">
       <Toaster/>
       <h1>{post.title}</h1>
       <p>{post.description}</p>
@@ -72,8 +72,8 @@ const SinglePost = ({ post }) => {
       {post.author.uid == user?.uid &&(
         <button onClick={deletePost}>Delete Post</button>
       )}
-      
-      <form onSubmit={handleSubmit}>
+      <div className="comments">
+      {user ? (<form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="type a comment"
@@ -81,13 +81,20 @@ const SinglePost = ({ post }) => {
           onChange={(e) => setcommentText(e.target.value)}
         />
         <button type="submit">Comment</button>
-      </form>
+      </form>):(
+        <h1>Login to post comments</h1>
+      )}
+      
+      <h1>Comments</h1>
       {comments.map((comment) => (
         <div>
           <h2>{comment.comment}</h2>
           <Link to={`/user/${comment.uid}`}>{comment.name}</Link>
         </div>
+        
       ))}
+
+</div>
     </div>
   );
 };

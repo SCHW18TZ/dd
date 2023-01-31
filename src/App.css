@@ -106,3 +106,39 @@ ul .link {
 .dvs {
   margin: 40px 0;
 }
+
+.SinglePostPage{
+  height: 93vh;
+  background: #B9F3FC;
+  text-align: center;
+}
+
+.SinglePostPage h1, p, button{
+  padding-top: 20px;
+}
+
+p{
+  font-weight: bold;
+  font-size: larger;
+}
+
+a{
+  font-weight: bold;
+}
+
+.comments{
+  margin-top: 100px;
+}
+
+.HomePage,.UserPage{
+  
+  padding-top: 100px;
+  height: 100vh;
+  text-align: center;
+  background: #B9F3FC;
+}
+
+.avatar{
+  display: flex;
+  justify-content: center;
+}

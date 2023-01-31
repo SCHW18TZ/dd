@@ -27,7 +27,8 @@ const Home = () => {
 
   return (
     //Make a HTML markup to display all posts
-    <div>
+    <div className="HomePage">
+      <div className="posts">
       {posts.map((post) => (
         <>
           <a href={`/post/${post.id}`}>
@@ -35,6 +36,7 @@ const Home = () => {
           </a>
         </>
       ))}
+    </div>
     </div>
   );
 };

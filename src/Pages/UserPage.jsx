@@ -8,8 +8,10 @@ const UserPage = ({ userData }) => {
   const [user] = useAuthState(auth);
 
   return (
-    <div>
+    <div className="UserPage">
+      <div className="avatar">
       <Avatar src={userData.profilePhoto} />
+      </div>
       <h1>{userData.name}</h1>
       <h6>{userData.email}</h6>
       {user?.uid == userData.uid && <Link to="/myaccount">Edit</Link>}

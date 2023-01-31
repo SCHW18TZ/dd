@@ -12,7 +12,7 @@ import {
 import {Toaster,toast} from 'react-hot-toast'
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db } from "../firebase";
@@ -118,6 +118,7 @@ const Register = () => {
       <div className="GoogleContainer">
         <p>Or you can sign in with Google</p>
         <GoogleButton onClick={LogInWithGoogle} />
+        <p>Already got an account? <Link to="/login">Login</Link></p>
       </div>
     </div>
   );

@@ -7,8 +7,8 @@ import Button from "@mui/material/Button";
 import { Link, Navigate } from "react-router-dom";
 import { getDownloadURL } from "firebase/storage";
 import { updateProfile,updateEmail } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate,redirect } from "react-router-dom";
+import {Toaster,toast} from 'react-hot-toast'
 const MyAccount = () => {
   const [user] = useAuthState(auth);
   const [editName, seteditemail] = useState(true);
@@ -41,51 +41,61 @@ const MyAccount = () => {
   };
 
   return (
-    <div className="My-Account">
-      <form onSubmit={handleSubmit}>
-        <div className="dvs">
-          <Avatar src={user?.photoURL} />
-        </div>
-        <div className="dvs">
-          <TextField
-            required
-            id="outlined-required"
-            label="Name"
-            defaultValue={user?.displayName}
-            disabled={editName}
-          />
-          <Button variant="contained" onClick={editNameToogle}>
-            {editName ? "Edit" : "Save"}
-          </Button>
-        </div>
-        
-        <div className="dvs">
-          <Link to="/reset">Change Password</Link>
-        </div>
-        <div className="dvs">
-          <Button type="submit" variant="contained">
-            Save
-          </Button>
-        </div>
-      
-      </form>
-    
-      <form  onSubmit={changeEmail} >
+    <div >
+      <Toaster/>
+    {user ? (<div className="My-Account">
+    <form onSubmit={handleSubmit}>
       <div className="dvs">
-          <TextField
-            required
-            id="outlined-required"
-            label="Email"
-            defaultValue={user?.email}
-            disabled={editemail}
-          />
-          <Button variant="contained" onClick={editEmailToogle}>
-            {editemail ? "Edit" : "Save"}
-          </Button>
-          <button type="submit">Change Email</button>
-        </div>
-      </form>
+        <Avatar src={user?.photoURL} />
+      </div>
+      <div className="dvs">
+        <TextField
+          required
+          id="outlined-required"
+          label="Name"
+          defaultValue={user?.displayName}
+          disabled={editName}
+        />
+        <Button variant="contained" onClick={editNameToogle}>
+          {editName ? "Edit" : "Save"}
+        </Button>
+      </div>
+      
+      <div className="dvs">
+        <Link to="/reset">Change Password</Link>
+      </div>
+      <div className="dvs">
+        <Button type="submit" variant="contained">
+          Save
+        </Button>
+      </div>
+    
+    </form>
+  
+    <form  onSubmit={changeEmail} >
+    <div className="dvs">
+        <TextField
+          required
+          id="outlined-required"
+          label="Email"
+          defaultValue={user?.email}
+          disabled={editemail}
+        />
+        <Button variant="contained" onClick={editEmailToogle}>
+          {editemail ? "Edit" : "Save"}
+        </Button>
+        <button type="submit">Change Email</button>
+      </div>
+    </form>
+  </div>):(
+  
+    <h1>You need to be logged in to view this page, <Link to='/register'>Register here</Link></h1>
+        
+      
+    )}
+
     </div>
+    
   );
 };
 
