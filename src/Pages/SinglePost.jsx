@@ -96,7 +96,7 @@ const SinglePost = ({ post }) => {
         <div>
           <h2>{comment.comment}</h2>
           <Link to={`/user/${comment.uid}`}>{comment.name}</Link>
-          {user.uid == comment.uid ? (
+          {user?.uid == comment.uid ? (
             <button onClick={()=>{
               deleteComment(comment.id)
             }}>Delete Comment</button>
