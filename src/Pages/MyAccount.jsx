@@ -16,7 +16,7 @@ const MyAccount = () => {
   let navigate = useNavigate()
   const editNameToogle = () => {
     editName ? seteditemail(false) : seteditemail(true);
-  };
+  };    
   const editEmailToogle = () => {
     editemail ? seteditpassword(false) : seteditpassword(true);
   };

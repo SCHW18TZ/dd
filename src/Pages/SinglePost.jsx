@@ -16,6 +16,7 @@ import {Toaster,toast} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
 
+
 const SinglePost = ({ post }) => {
 
   let navigate = useNavigate()
@@ -56,12 +57,17 @@ const SinglePost = ({ post }) => {
   };
 
   const deletePost = async () => {
-      deleteDoc(doc(db,'posts','AiX6kigd9JLDtJx7JCZL')).catch(err=>{console.log(err);})
+      deleteDoc(doc(db,'posts',post.id)).catch(err=>{console.log(err);})
       navigate('/')
       toast.success("Post Deleted")
     
   };
   
+  const deleteComment = async (id) => {
+    const commentDoc = doc(db, "comments", id);
+    await deleteDoc(commentDoc);
+  };
+
 
   return (
     <div className="SinglePostPage">
@@ -90,6 +96,14 @@ const SinglePost = ({ post }) => {
         <div>
           <h2>{comment.comment}</h2>
           <Link to={`/user/${comment.uid}`}>{comment.name}</Link>
+          {user.uid == comment.uid ? (
+            <button onClick={()=>{
+              deleteComment(comment.id)
+            }}>Delete Comment</button>
+          ) : (
+            console.log('user')
+  )}
+          
         </div>
         
       ))}
