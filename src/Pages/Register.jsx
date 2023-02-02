@@ -54,7 +54,7 @@ const Register = () => {
           photoURL: url,
         });
         addDoc(userCollectionRef, {
-          name: result.user.displayName,
+          name: result.user.displayName.split(" ").join("_").trimEnd(),
           email: result.user.email,
           profilePhoto: url,
           uid: result.user.uid,

@@ -51,7 +51,7 @@ function App() {
         ))}
         {users.map((userData) => (
           <Route
-            path={`/users/${userData.uid}`}
+            path={`/user/${userData.uid}`}
             element={<UserPage userData={userData} />}
           />
         ))}
