@@ -24,7 +24,7 @@ const Navbar = () => {
       </div>
       {user ? (
         <ul>
-          <Link className="link" to={`users/${user.uid}`}>{user?.displayName}</Link>
+          <Link className="link" to={`user/${user.uid}`}>{user?.displayName}</Link>
           <Avatar src={user?.photoURL} />
           <Button                     type="submit"
                     variant="contained"
