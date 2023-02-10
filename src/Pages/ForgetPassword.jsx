@@ -1,31 +1,34 @@
-import React from 'react'
-import { auth, provider } from "../firebase";
-import {useNavigate} from 'react-router-dom'
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useState } from 'react';
-import {getAuth,sendPasswordResetEmail } from 'firebase/auth'
+import React from "react";
+import { auth } from "../firebase";
+import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { sendPasswordResetEmail } from "firebase/auth";
 const ForgetPassword = () => {
-
-    const [email, setemail] = useState('')
-
-    sendPasswordResetEmail(auth, email)
-  .then(() => {
-    console.log('sent');
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
-
+  const ResetPassword = async (e) => {
+    const email = e.target[0].value;
+    e.preventDefault();
+    const res = await sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success("Password reset link sent to your email");
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.code === "auth/user-not-found")
+          toast.error("No user found with this email");
+        else {
+          toast.error(err.message);
+        }
+      });
+  };
 
   return (
-    <form >
-        <h1>Reset Password</h1>
-        <input type="email" onChange={(e)=>{setemail(e.target.value)}}  />
-        <button type="submit">Reset Password</button>
+    <form onSubmit={ResetPassword}>
+      <Toaster />
+      <h1>Reset Password</h1>
+      <input type="email" />
+      <button type="submit">Reset Password</button>
     </form>
-  )
-}
+  );
+};
 
-export default ForgetPassword
+export default ForgetPassword;

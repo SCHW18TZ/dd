@@ -7,12 +7,12 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   updateProfile,
-  sendEmailVerification  
+  sendEmailVerification,
 } from "firebase/auth";
-import {Toaster,toast} from 'react-hot-toast'
+import { Toaster, toast } from "react-hot-toast";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db } from "../firebase";
@@ -22,8 +22,8 @@ const Register = () => {
   let navigate = useNavigate();
   const [name, setname] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showpassword, setshowpassword] = useState(false)
-  const userCollectionRef = collection(db, "users")
+  const [showpassword, setshowpassword] = useState(false);
+  const userCollectionRef = collection(db, "users");
 
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
@@ -32,7 +32,7 @@ const Register = () => {
       email: result.user.email,
       profilePhoto: result.user.photoURL,
       uid: result.user.uid,
-    })
+    });
     navigate("/");
   };
 
@@ -40,39 +40,46 @@ const Register = () => {
     e.preventDefault();
     const email = e.target[2].value;
     const password = e.target[4].value;
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    updateProfile(result.user, {
-      displayName: name,
-    });
-    const emailSen = await sendEmailVerification(auth.currentUser)
-    console.log(emailSen);
-    if (selectedImage == null) return;
-    const ImageRef = ref(storage, `ProfilePics/${selectedImage.name + v4()}`);
-    uploadBytes(ImageRef, selectedImage).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        updateProfile(result.user, {
-          photoURL: url,
-        });
-        addDoc(userCollectionRef, {
-          name: result.user.displayName.split(" ").join("_").trimEnd(),
-          email: result.user.email,
-          profilePhoto: url,
-          uid: result.user.uid,
-    })
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(result.user, {
+        displayName: name,
       });
-    });
-    navigate("/");
-    toast.success("Registed successfully ")
+      const emailSen = await sendEmailVerification(auth.currentUser);
+      console.log(emailSen);
+      if (selectedImage == null) return;
+      const ImageRef = ref(storage, `ProfilePics/${selectedImage.name + v4()}`);
+      uploadBytes(ImageRef, selectedImage).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          updateProfile(result.user, {
+            photoURL: url,
+          });
+          addDoc(userCollectionRef, {
+            name: result.user.displayName.split(" ").join("_").trimEnd(),
+            email: result.user.email,
+            profilePhoto: url,
+            uid: result.user.uid,
+          });
+        });
+      });
+      navigate("/");
+      toast.success("Registed successfully ");
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   const [user] = useAuthState(auth);
   return (
     <div className="Register">
-      <Toaster/>
+      <Toaster />
       <form onSubmit={handleSubmit} className="RegisterForm">
-
         <div className="inputContainer">
-        <h1>Register</h1>
+          <h1>Register</h1>
           <div className="input">
             <TextField
               required
@@ -102,7 +109,8 @@ const Register = () => {
             />
           </div>
           <div className="input">
-            <input required
+            <input
+              required
               type="file"
               accept="image/*"
               onChange={(e) => setSelectedImage(e.target.files[0])}
@@ -118,7 +126,9 @@ const Register = () => {
       <div className="GoogleContainer">
         <p>Or you can sign in with Google</p>
         <GoogleButton onClick={LogInWithGoogle} />
-        <p>Already got an account? <Link to="/login">Login</Link></p>
+        <p>
+          Already got an account? <Link to="/login">Login</Link>
+        </p>
       </div>
     </div>
   );

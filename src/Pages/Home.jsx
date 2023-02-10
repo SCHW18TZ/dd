@@ -2,11 +2,10 @@ import React from "react";
 
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate, Link } from "react-router-dom";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+
 import { db } from "../firebase";
-import { deleteDoc, getDocs, collection } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const Home = () => {
@@ -29,14 +28,14 @@ const Home = () => {
     //Make a HTML markup to display all posts
     <div className="HomePage">
       <div className="posts">
-      {posts.map((post) => (
-        <>
-          <a href={`/post/${post.id}`}>
-            <h1>{post.title}</h1>
-          </a>
-        </>
-      ))}
-    </div>
+        {posts.map((post) => (
+          <>
+            <a href={`/post/${post.id}`}>
+              <h1>{post.title}</h1>
+            </a>
+          </>
+        ))}
+      </div>
     </div>
   );
 };
