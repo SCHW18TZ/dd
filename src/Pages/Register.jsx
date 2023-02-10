@@ -69,7 +69,11 @@ const Register = () => {
       navigate("/");
       toast.success("Registed successfully ");
     } catch (err) {
-      toast.error(err.message);
+      if (err.code === "auth/email-already-in-use") {
+        toast.error("Email already in use");
+      } else {
+        toast.error(err.message);
+      }
     }
   };
 

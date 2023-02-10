@@ -1,8 +1,10 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 import { db } from "../firebase";
 import { getDocs, collection } from "firebase/firestore";
@@ -25,14 +27,22 @@ const Home = () => {
   }, []);
 
   return (
-    //Make a HTML markup to display all posts
+    //Make a HTML markup to disp/lay all posts
     <div className="HomePage">
       <div className="posts">
         {posts.map((post) => (
           <>
-            <a href={`/post/${post.id}`}>
-              <h1>{post.title}</h1>
-            </a>
+            <Card style={{ width: "18rem" }}>
+              <Card.Body>
+                <Card.Title>
+                  <h1>{post.title}</h1>
+                </Card.Title>
+                <Card.Text>{post.description}</Card.Text>
+                <Link to={`/post/${post.id}`}>
+                  <Button variant="primary">Go somewhere</Button>
+                </Link>
+              </Card.Body>
+            </Card>
           </>
         ))}
       </div>

@@ -3,42 +3,52 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import GoogleButton from "react-google-button";
 import { auth, provider } from "../firebase";
-import { signInWithPopup,createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {toast,Toaster } from 'react-hot-toast'
+import { toast, Toaster } from "react-hot-toast";
 
-const Login = ()=>{
-
-  const [showpassword, setshowpassword] = useState(false)
+const Login = () => {
+  const [showpassword, setshowpassword] = useState(false);
   let navigate = useNavigate();
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     console.log(result);
-    navigate('/')
+    navigate("/");
   };
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const email = e.target[0].value;
-      const password = e.target[2].value;
-      const user = signInWithEmailAndPassword(auth, email, password)
-      console.log(user);
-      navigate('/')
-      toast.success('logged in successfully!')
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[2].value;
+    const user = await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        navigate("/");
+        // ...
+      })
+      .catch((error) => {
+        toast.error("Invalid email or password");
+      });
+  };
 
-    const showPassword = () => {
-      {showpassword ? setshowpassword(false) : setshowpassword(true)}
+  const showPassword = () => {
+    {
+      showpassword ? setshowpassword(false) : setshowpassword(true);
     }
+  };
 
-    return(
-        <div  className="Register">
-          <Toaster/>
+  return (
+    <div className="Register">
+      <Toaster />
       <form onSubmit={handleSubmit} className="RegisterForm">
-        
         <div className="inputContainer">
-        <h1>Login</h1>
+          <h1>Login</h1>
           <div className="input">
             <TextField
               required
@@ -56,7 +66,9 @@ const Login = ()=>{
               type={`${showpassword ? "text" : "password"}`}
               autoComplete="current-password"
             />
-            <Button variant="contained" onClick={showPassword}>{showpassword ? 'Hide' : 'Show'}</Button>
+            <Button variant="contained" onClick={showPassword}>
+              {showpassword ? "Hide" : "Show"}
+            </Button>
           </div>
           <div className="buttonContainer">
             <Button type="submit" variant="contained" className="SignInButton">
@@ -64,14 +76,16 @@ const Login = ()=>{
             </Button>
           </div>
         </div>
-        <p>Forgot password? <Link to='/reset'>Click here</Link></p>
+        <p>
+          Forgot password? <Link to="/reset">Click here</Link>
+        </p>
       </form>
       <div className="GoogleContainer">
         <p>Or you can sign in with Google</p>
         <GoogleButton onClick={LogInWithGoogle} />
       </div>
     </div>
-    )
-}
+  );
+};
 
-export default Login
+export default Login;

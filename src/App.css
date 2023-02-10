@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,200&display=swap");
+@import "bootstrap/dist/css/bootstrap.css";
 
 * {
   margin: 0;
@@ -107,38 +108,40 @@ ul .link {
   margin: 40px 0;
 }
 
-.SinglePostPage{
+.SinglePostPage {
   height: 93vh;
-  background: #B9F3FC;
+  background: #b9f3fc;
   text-align: center;
 }
 
-.SinglePostPage h1, p, button{
+.SinglePostPage h1,
+p,
+button {
   padding-top: 20px;
 }
 
-p{
+p {
   font-weight: bold;
   font-size: larger;
 }
 
-a{
+a {
   font-weight: bold;
 }
 
-.comments{
+.comments {
   margin-top: 100px;
 }
 
-.HomePage,.UserPage{
-  
+.HomePage,
+.UserPage {
   padding-top: 100px;
   height: 100vh;
   text-align: center;
-  background: #B9F3FC;
+  background: #b9f3fc;
 }
 
-.avatar{
+.avatar {
   display: flex;
   justify-content: center;
 }
