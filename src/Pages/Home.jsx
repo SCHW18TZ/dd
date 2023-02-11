@@ -5,14 +5,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-
 import { db } from "../firebase";
 import { getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
 const Home = () => {
   const postCollectionRef = collection(db, "posts");
   const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState("");
 
   const [user] = useAuthState(auth);
   let navigate = useNavigate();
@@ -28,24 +27,23 @@ const Home = () => {
 
   return (
     <div className="HomePage">
-      <div className="posts">
-        {posts.map((post) => (
-          <div className="post">
-            <Card style={{ width: "18rem" }}>
-              <Card.Body>
-                <Card.Title>
-                  <h1>{post.title}</h1>
-                </Card.Title>
-                <Card.Text>
-                  <p className="PostDescription">{post.description}</p>
-                </Card.Text>
-                <Link to={`/post/${post.id}`}>
-                  <Button variant="primary">Expand</Button>
-                </Link>
-              </Card.Body>
-            </Card>
-          </div>
-        ))}
+      <div>
+        <input type="text" onChange={(e) => setSearch(e.target.value)} />
+        {posts
+          .filter((post) => {
+            if (search == "") {
+              return post;
+            } else if (
+              post.title.toLowerCase().includes(search.toLowerCase())
+            ) {
+              return post;
+            }
+          })
+          .map((post) => (
+            <div>
+              <Link to={`/post/${post.id}`}>{post.title}</Link>
+            </div>
+          ))}
       </div>
     </div>
   );
