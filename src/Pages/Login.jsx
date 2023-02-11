@@ -18,7 +18,12 @@ const Login = () => {
   let navigate = useNavigate();
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
-    console.log(result);
+    addDoc(userCollectionRef, {
+      name: result.user.displayName,
+      email: result.user.email,
+      profilePhoto: result.user.photoURL,
+      uid: result.user.uid,
+    });
     navigate("/");
   };
   const handleSubmit = async (e) => {
