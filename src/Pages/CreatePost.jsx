@@ -1,5 +1,5 @@
-//Make a whole react page which allows a user that is logged in to make a post
-
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 import React from "react";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -9,10 +9,13 @@ import Button from "@mui/material/Button";
 import { db } from "../firebase";
 import { sendEmailVerification } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
-import {Toaster,toast} from 'react-hot-toast'
+import { Toaster, toast } from "react-hot-toast";
+import { storage } from "../firebase";
+import { useState } from "react";
 
 const CreatePost = () => {
   const postCollectionRef = collection(db, "posts");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [user] = useAuthState(auth);
   let navigate = useNavigate();
@@ -20,25 +23,49 @@ const CreatePost = () => {
     e.preventDefault();
     const title = e.target[0].value;
     const description = e.target[2].value;
-    await addDoc(postCollectionRef, {
-      title: title,
-      description: description,
-      author: {
-        name: user.displayName,
-        uid: user.uid,
-      },
-    });
-    navigate("/");
-    toast.success("Post created successfully  ")
+    if (selectedImage == null) {
+      addDoc(postCollectionRef, {
+        title: title,
+        description: description,
+        image: null,
+        author: {
+          name: user.displayName,
+          uid: user.uid,
+        },
+      });
+
+      navigate("/");
+      toast.success("Post created successfully  ");
+    } else {
+      const ImageRef = ref(storage, `ProfilePics/${selectedImage.name + v4()}`);
+      uploadBytes(ImageRef, selectedImage).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          console.log(url);
+
+          addDoc(postCollectionRef, {
+            title: title,
+            description: description,
+            image: url,
+            author: {
+              name: user.displayName,
+              uid: user.uid,
+            },
+          });
+        });
+      });
+
+      navigate("/");
+      toast.success("Post created successfully  ");
+    }
   };
 
-  const sendVerification = async()=>{
-    const result = await sendEmailVerification(user)
+  const sendVerification = async () => {
+    const result = await sendEmailVerification(user);
     console.log(result);
-  }
+  };
   return (
     <div>
-      <Toaster/>
+      <Toaster />
       {user ? (
         user.emailVerified ? (
           <div>
@@ -66,6 +93,13 @@ const CreatePost = () => {
                     className="text-field"
                   />
                 </div>
+                <div className="input">
+                  <input
+                    accept="image/*"
+                    type="file"
+                    onChange={(e) => setSelectedImage(e.target.files[0])}
+                  />
+                </div>
                 <div className="buttonContainer">
                   <Button
                     type="submit"
@@ -82,7 +116,9 @@ const CreatePost = () => {
           <div>
             <h1>Please verify your email in order to create A post</h1>
             <p>Please check your inbox in order to verify your email.</p>
-            <button onClick={sendVerification}>Click here to resend verification mail</button>
+            <button onClick={sendVerification}>
+              Click here to resend verification mail
+            </button>
           </div>
         )
       ) : (

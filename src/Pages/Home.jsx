@@ -27,23 +27,24 @@ const Home = () => {
   }, []);
 
   return (
-    //Make a HTML markup to disp/lay all posts
     <div className="HomePage">
       <div className="posts">
         {posts.map((post) => (
-          <>
+          <div className="post">
             <Card style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>
                   <h1>{post.title}</h1>
                 </Card.Title>
-                <Card.Text>{post.description}</Card.Text>
+                <Card.Text>
+                  <p className="PostDescription">{post.description}</p>
+                </Card.Text>
                 <Link to={`/post/${post.id}`}>
-                  <Button variant="primary">Go somewhere</Button>
+                  <Button variant="primary">Expand</Button>
                 </Link>
               </Card.Body>
             </Card>
-          </>
+          </div>
         ))}
       </div>
     </div>

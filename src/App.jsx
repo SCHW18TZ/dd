@@ -12,6 +12,7 @@ import { db } from "./firebase";
 import ForgetPassword from "./Pages/ForgetPassword";
 import UserPage from "./Pages/UserPage";
 import MyAccount from "./Pages/MyAccount";
+import Search from "./Pages/Search";
 
 function App() {
   const [posts, setposts] = useState([]);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/new" element={<CreatePost />} />
         <Route path="/reset" element={<ForgetPassword />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/myaccount" element={<MyAccount />} />
         {posts.map((post) => (
           <Route

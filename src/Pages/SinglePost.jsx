@@ -12,14 +12,13 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
-import {Toaster,toast} from 'react-hot-toast'
+import { Toaster, toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-
+import Button from "react-bootstrap/Button";
 
 const SinglePost = ({ post }) => {
-
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   const postCollectionRef = collection(db, "posts");
   const commentsCollectionRef = collection(db, "comments");
@@ -53,62 +52,72 @@ const SinglePost = ({ post }) => {
       uid: user.uid,
     });
     setcommentText("");
-    toast.success ("Comment added successfully  ")
+    toast.success("Comment added successfully  ");
   };
 
   const deletePost = async () => {
-      deleteDoc(doc(db,'posts',post.id)).catch(err=>{console.log(err);})
-      navigate('/')
-      toast.success("Post Deleted")
-    
+    deleteDoc(doc(db, "posts", post.id)).catch((err) => {
+      console.log(err);
+    });
+    navigate("/");
+    toast.success("Post Deleted");
   };
-  
+
   const deleteComment = async (id) => {
     const commentDoc = doc(db, "comments", id);
     await deleteDoc(commentDoc);
   };
 
-
   return (
     <div className="SinglePostPage">
-      <Toaster/>
+      <Toaster />
+      {/* Check if image exits and display it */}
+      {post.image && <img src={post.image} className="PostImage" alt="post" />}
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <Link to={`/user/${post.author.uid}`}>by {post.author.name}</Link>
-      {post.author.uid == user?.uid &&(
-        <button onClick={deletePost}>Delete Post</button>
+      {post.author.uid == user?.uid && (
+        <Button variant="primary" onClick={deletePost}>
+          Delete Post
+        </Button>
       )}
       <div className="comments">
-      {user ? (<form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="type a comment"
-          value={commentText}
-          onChange={(e) => setcommentText(e.target.value)}
-        />
-        <button type="submit">Comment</button>
-      </form>):(
-        <h1>Login to post comments</h1>
-      )}
-      
-      <h1>Comments</h1>
-      {comments.map((comment) => (
-        <div>
-          <h2>{comment.comment}</h2>
-          <Link to={`/user/${comment.uid}`}>{comment.name}</Link>
-          {user?.uid == comment.uid ? (
-            <button onClick={()=>{
-              deleteComment(comment.id)
-            }}>Delete Comment</button>
-          ) : (
-            console.log('user')
-  )}
-          
-        </div>
-        
-      ))}
+        {user ? (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="type a comment"
+              value={commentText}
+              onChange={(e) => setcommentText(e.target.value)}
+            />
+            <Button variant="primary" type="submit">
+              Comment
+            </Button>
+          </form>
+        ) : (
+          <h1>Login to post comments</h1>
+        )}
 
-</div>
+        <h1>Comments</h1>
+        {comments.map((comment) => (
+          <div>
+            <h2>{comment.comment}</h2>
+            <Link to={`/user/${comment.uid}`}>{comment.name}</Link>
+            {user?.uid == comment.uid ? (
+              <Button
+                variant="primary"
+                onClick={() => {
+                  deleteComment(comment.id);
+                }}
+              >
+                Delete Comment
+              </Button>
+            ) : (
+              console.log("user")
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

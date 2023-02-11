@@ -34,8 +34,9 @@ body {
   margin-top: 25px;
 }
 
-.SignInButton {
+.SignOutButton {
   width: 230px;
+  margin: 20px;
 }
 
 .GoogleContainer {
@@ -144,4 +145,37 @@ a {
 .avatar {
   display: flex;
   justify-content: center;
+}
+
+.HomePage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post {
+  margin: 50px;
+}
+
+.SinglePostPage button {
+  margin-left: 20px;
+}
+
+.PostImage {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-top: 20px;
+}
+
+.PostDescription {
+  font-size: 15px;
+}
+
+.link {
+  margin-left: 20px;
+}
+
+Avatar {
+  margin-right: 20px;
 }
