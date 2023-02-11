@@ -3,18 +3,16 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import GoogleButton from "react-google-button";
 import { auth, provider } from "../firebase";
-import {
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
-
+import { db } from "../firebase";
 const Login = () => {
   const [showpassword, setshowpassword] = useState(false);
+  const userCollectionRef = collection(db, "users");
+
   let navigate = useNavigate();
   const LogInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
